@@ -3,6 +3,12 @@
 up:
 	@docker-compose up -d	
 
+down:
+	@docker-compose down
+
+build:
+	@docker-compose build casbin
+
 clear: clear-log-server clear-mysql
 
 clear-log-server:
