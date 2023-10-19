@@ -3,3 +3,7 @@
 /.idea
 /.vscode
 .DS_Store
+casbin-service.exe
+casbin-service
+main
+main.exe
