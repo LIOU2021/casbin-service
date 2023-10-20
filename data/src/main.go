@@ -4,12 +4,13 @@ import (
 	"casbin-service/logger"
 	"casbin-service/router"
 	"context"
-	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
+	"go.uber.org/zap"
 )
 
 func init() {
@@ -28,7 +29,8 @@ func main() {
 	}
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			fmt.Println(err)
+			logger.Error("ListenAndServe", zap.String("err", err.Error()))
+			os.Exit(1)
 		}
 	}()
 
@@ -40,7 +42,7 @@ func main() {
 	defer cancel()
 
 	if err := srv.Shutdown(c); err != nil {
-		logger.Errorf("casbin-service Shutdown error: %v", err)
+		logger.Error("Shutdown", zap.String("err", err.Error()))
 		os.Exit(1)
 		return
 	}

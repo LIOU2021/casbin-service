@@ -65,6 +65,22 @@ func Debug(msg string, fields ...zapcore.Field) {
 	logger.Debug(msg, fields...)
 }
 
+func InfoName(name string, args ...interface{}) {
+	logger.Sugar().Named(name).Info(args...)
+}
+
+func ErrorName(name string, args ...interface{}) {
+	logger.Sugar().Named(name).Error(args...)
+}
+
+func WarnName(name string, args ...interface{}) {
+	logger.Sugar().Named(name).Warn(args...)
+}
+
+func DebugName(name string, args ...interface{}) {
+	logger.Sugar().Named(name).Debug(args...)
+}
+
 func Infof(template string, args ...interface{}) {
 	logger.Sugar().Infof(template, args...)
 }
