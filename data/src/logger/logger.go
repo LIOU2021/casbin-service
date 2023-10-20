@@ -9,12 +9,22 @@ import (
 )
 
 var logger *zap.Logger
+var loggerForAccess *zap.Logger
 
-// func MyCaller(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
-// 	enc.AppendString(filepath.Base(caller.FullPath()))
-// }
+//	func MyCaller(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
+//		enc.AppendString(filepath.Base(caller.FullPath()))
+//	}
+
+func GetAccessLogger() *zap.Logger {
+	return loggerForAccess
+}
 
 func Init() {
+	initBase()
+	initForAccess()
+}
+
+func initBase() {
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   "../log/server/server.log",
 		MaxSize:    1,    // 单一档案最大几M
@@ -63,10 +73,52 @@ func Init() {
 		zap.AddCallerSkip(1),
 		// zap.AddStacktrace(zap.DebugLevel),
 	)
+
+}
+
+func initForAccess() {
+	lumberJackLoggerForAccess := &lumberjack.Logger{
+		Filename:   "../log/api/access.log",
+		MaxSize:    1,    // 单一档案最大几M
+		MaxBackups: 10,   // 最多保留几份
+		MaxAge:     7,    // 最多保留几天
+		Compress:   true, // 压缩成gz
+	}
+	writeSyncerForAccess := zapcore.AddSync(lumberJackLoggerForAccess)
+	encodeConfigForAccess := zapcore.EncoderConfig{
+		// LevelKey:    "level",
+		// TimeKey:    "time",
+		MessageKey: "message",
+		NameKey:    "logger", // 可以放自定义x-api-id
+		// CallerKey:   "caller",
+		// FunctionKey: "func",
+		// StacktraceKey: "trace",
+		// LineEnding:     "\r\n",
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.SecondsDurationEncoder,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+		// EncodeCaller:   MyCaller, // 自定义
+	}
+	encoderForAccess := zapcore.NewConsoleEncoder(encodeConfigForAccess)
+	coreForAccess := zapcore.NewTee(
+		zapcore.NewCore(
+			encoderForAccess,
+			zapcore.Lock(os.Stdout), // 打印到console
+			zapcore.DebugLevel,
+		),
+		zapcore.NewCore(
+			encoderForAccess,
+			writeSyncerForAccess, // 打印到access.log
+			zapcore.InfoLevel,
+		),
+	)
+	loggerForAccess = zap.New(coreForAccess, zap.AddCaller())
 }
 
 func Close() {
 	logger.Sync()
+	loggerForAccess.Sync()
 }
 
 func Info(msg string, fields ...zapcore.Field) {

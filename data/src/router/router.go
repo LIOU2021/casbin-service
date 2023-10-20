@@ -2,28 +2,23 @@ package router
 
 import (
 	"casbin-service/middleware"
-	"sync"
 
 	"github.com/gin-gonic/gin"
 )
 
 var (
-	engine     *gin.Engine
-	engineOnce sync.Once
+	engine *gin.Engine
 )
 
-func New() (r *gin.Engine) {
-	engineOnce.Do(func() {
-		gin.SetMode(gin.ReleaseMode)
-		engine = gin.New()
-		engine.Use(
-			gin.Recovery(),
-			middleware.SystemLogFormatMiddleware,
-			// gin.Logger(),
-		)
+func Init() (r *gin.Engine) {
+	gin.SetMode(gin.ReleaseMode)
+	engine = gin.New()
+	engine.Use(
+		gin.Recovery(),
+		middleware.SystemLogFormatMiddleware,
+		// gin.Logger(),
+	)
 
-		systemApi()
-	})
-
+	systemApi()
 	return engine
 }

@@ -21,7 +21,7 @@ func main() {
 		logger.Close()
 	}()
 
-	r := router.New()
+	r := router.Init()
 
 	p := ":8080"
 	srv := &http.Server{
