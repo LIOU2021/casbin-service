@@ -9,7 +9,7 @@ services:
     ports:
       - ${SERVER_PORT}:8080
     volumes:
-      - ./data/log/server:/app/log/server
+      - ./data/log:/app/log
     depends_on:
       - mysql
       - redis

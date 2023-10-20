@@ -13,7 +13,7 @@ func SystemLogFormatMiddleware(c *gin.Context) {
 	c.Next()
 	d := time.Since(start)
 
-	logger.GetAccessLogger().Sugar().Infof("%s - [%s] \"%s %s %s\" %d %d %s \"%s\"\n",
+	logger.GetAccessLogger().Sugar().Infof("%s - [%s] \"%s %s %s\" %d %d %s \"%s\"",
 		c.ClientIP(),
 		time.Now().Format(time.RFC3339Nano),
 		c.Request.Method,

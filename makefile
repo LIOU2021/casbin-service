@@ -13,6 +13,7 @@ clear: clear-log clear-mysql-data
 
 clear-log:
 	rm -rf ./data/log/server
+	rm -rf ./data/log/api
 	rm -rf ./data/log/mysql
 
 clear-mysql-data:
