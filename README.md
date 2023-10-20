@@ -1,8 +1,9 @@
 # casbin service
 
 ## todo
-1. 先去go目錄增加yml讀取配置，分db、redis、log等大項。log參數要能提出日誌備份幾分跟幾天
-2. config.yml 寫在`data\src`，dockerfile要copy這個檔案到第二個stage
+1. golang load conf.yml
+2. config.yml 寫在`data\src`，dockerfile要copy這個檔案到第二個stage。复制example变成config.yml
+3. 将logger配置读取config.yml
 ## start
 ```
 # 1. 處理docker-compose env

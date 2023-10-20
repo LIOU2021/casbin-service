@@ -1,0 +1,15 @@
+logger:
+  MaxSize:    1,    # 单一档案最大几M
+  MaxBackups: 10,   # 最多保留几份
+  MaxAge:     7,    # 最多保留几天
+redis:
+  user : root
+  password : password
+  host : redis
+  port : 6379
+mysql:
+  user : root
+  password : test
+  host : mysql
+  port : 3306
+  dbname : casbin
