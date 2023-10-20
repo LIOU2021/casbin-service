@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"os"
+
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -22,11 +24,11 @@ func Init() {
 	}
 
 	writeSyncer := zapcore.AddSync(lumberJackLogger)
-	encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
+	encodeConfig := zapcore.EncoderConfig{
 		LevelKey:    "level",
 		TimeKey:     "time",
 		MessageKey:  "message",
-		NameKey:     "name", // 可以放自定义x-api-id
+		NameKey:     "logger", // 可以放自定义x-api-id
 		CallerKey:   "caller",
 		FunctionKey: "func",
 		// StacktraceKey: "trace",
@@ -36,8 +38,26 @@ func Init() {
 		EncodeLevel:    zapcore.LowercaseLevelEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 		// EncodeCaller:   MyCaller, // 自定义
-	})
-	core := zapcore.NewCore(encoder, writeSyncer, zapcore.InfoLevel)
+	}
+
+	encoder := zapcore.NewJSONEncoder(encodeConfig)
+
+	// write syncers
+	stdoutSyncer := zapcore.Lock(os.Stdout)
+
+	// tee core
+	core := zapcore.NewTee(
+		zapcore.NewCore(
+			encoder,
+			stdoutSyncer, // 打印到console
+			zapcore.DebugLevel,
+		),
+		zapcore.NewCore(
+			encoder,
+			writeSyncer, // 打印到server.log
+			zapcore.InfoLevel,
+		),
+	)
 
 	logger = zap.New(core, zap.AddCaller(),
 		zap.AddCallerSkip(1),

@@ -23,11 +23,13 @@ func main() {
 
 	r := router.New()
 
+	p := ":8080"
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    p,
 		Handler: r,
 	}
 	go func() {
+		logger.Infof("start listen %s", p)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			logger.Error("ListenAndServe", zap.String("err", err.Error()))
 			os.Exit(1)
@@ -37,7 +39,7 @@ func main() {
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM)
 	<-ch
-	logger.Info("casbin-service shutdown ...")
+	logger.Info("shutdown")
 	c, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
