@@ -2,29 +2,32 @@ package middleware
 
 import (
 	"casbin-service/logger"
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 func SystemLogFormatMiddleware(c *gin.Context) {
-	gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
-		accessLog := fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
-			c.ClientIP(),
-			param.TimeStamp.Format(time.RFC1123),
-			param.Method,
-			param.Path,
-			param.Request.Proto,
-			param.StatusCode,
-			param.Latency,
-			param.Request.UserAgent(),
-			param.ErrorMessage,
-		)
+	start := time.Now()
+	slow := false
 
-		if param.Latency > (time.Millisecond * 250) {
-			logger.WarnName("api slow query", accessLog)
-		}
-		return accessLog
-	})(c)
+	c.Next()
+	d := time.Since(start)
+	if d > (time.Millisecond * 250) {
+		slow = true
+	}
+
+	logger.Info("api access",
+		zap.Int("status", c.Writer.Status()),
+		zap.String("ip", c.ClientIP()),
+		zap.String("ts", start.Format(time.RFC3339Nano)),
+		zap.String("proto", c.Request.Proto),
+		zap.String("method", c.Request.Method),
+		zap.String("url", c.Request.URL.Path+"?"+c.Request.URL.Query().Encode()),
+		zap.String("latency", d.String()),
+		zap.String("ua", c.Request.UserAgent()),
+		zap.Error(c.Err()),
+		zap.Bool("slow", slow),
+	)
 }
