@@ -11,6 +11,7 @@ func SystemLogFormatMiddleware(c *gin.Context) {
 	start := time.Now()
 
 	c.Next()
+
 	d := time.Since(start)
 
 	logger.GetAccessLogger().Sugar().Infof("%s - [%s] \"%s %s %s\" %d %d %s \"%s\"",
