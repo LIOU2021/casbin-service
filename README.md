@@ -13,6 +13,10 @@ cp .env.example .env
 # 2. 起docker-compose容器
 make up
 ```
+## tip
+- 日誌。支援輪播功能
+    - data\log\api\access.log
+    - data\log\server\server.log
 ## Ref
 - [Go 每日一库之 casbin](https://darjun.github.io/2020/06/12/godailylib/casbin/)
 - [casbin official github](https://github.com/casbin/casbin#installation)
