@@ -3,6 +3,8 @@ package logger
 import (
 	"os"
 
+	"github.com/gin-contrib/requestid"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
@@ -121,37 +123,69 @@ func Close() {
 	loggerForAccess.Sync()
 }
 
-func Info(msg string, fields ...zapcore.Field) {
-	logger.Info(msg, fields...)
-}
+// func Info(msg string, fields ...zapcore.Field) {
+// 	logger.Info(msg, fields...)
+// }
 
-func Error(msg string, fields ...zapcore.Field) {
-	logger.Error(msg, fields...)
-}
+// func Error(msg string, fields ...zapcore.Field) {
+// 	logger.Error(msg, fields...)
+// }
 
-func Warn(msg string, fields ...zapcore.Field) {
-	logger.Warn(msg, fields...)
-}
+// func Warn(msg string, fields ...zapcore.Field) {
+// 	logger.Warn(msg, fields...)
+// }
 
-func Debug(msg string, fields ...zapcore.Field) {
-	logger.Debug(msg, fields...)
-}
+// func Debug(msg string, fields ...zapcore.Field) {
+// 	logger.Debug(msg, fields...)
+// }
 
-func InfoName(name string, args ...interface{}) {
-	logger.Sugar().Named(name).Info(args...)
-}
+// func InfoCtx(c *gin.Context, msg string, fields ...zapcore.Field) {
+// 	logger.With(zap.String("X-Request-Id", requestid.Get(c))).Info(msg, fields...)
+// }
 
-func ErrorName(name string, args ...interface{}) {
-	logger.Sugar().Named(name).Error(args...)
-}
+// func ErrorCtx(c *gin.Context, msg string, fields ...zapcore.Field) {
+// 	logger.With(zap.String("X-Request-Id", requestid.Get(c))).Error(msg, fields...)
+// }
 
-func WarnName(name string, args ...interface{}) {
-	logger.Sugar().Named(name).Warn(args...)
-}
+// func WarnCtx(c *gin.Context, msg string, fields ...zapcore.Field) {
+// 	logger.With(zap.String("X-Request-Id", requestid.Get(c))).Warn(msg, fields...)
+// }
 
-func DebugName(name string, args ...interface{}) {
-	logger.Sugar().Named(name).Debug(args...)
-}
+// func DebugCtx(c *gin.Context, msg string, fields ...zapcore.Field) {
+// 	logger.With(zap.String("X-Request-Id", requestid.Get(c))).Debug(msg, fields...)
+// }
+
+// func InfoName(name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Info(args...)
+// }
+
+// func ErrorName(name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Error(args...)
+// }
+
+// func WarnName(name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Warn(args...)
+// }
+
+// func DebugName(name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Debug(args...)
+// }
+
+// func InfoNameCtx(c *gin.Context, name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Info(args...)
+// }
+
+// func ErrorNameCtx(c *gin.Context, name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Error(args...)
+// }
+
+// func WarnNameCtx(c *gin.Context, name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Warn(args...)
+// }
+
+// func DebugNameCtx(c *gin.Context, name string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Debug(args...)
+// }
 
 func Infof(template string, args ...interface{}) {
 	logger.Sugar().Infof(template, args...)
@@ -169,18 +203,50 @@ func Debugf(template string, args ...interface{}) {
 	logger.Sugar().Debugf(template, args...)
 }
 
-func InfofName(name, template string, args ...interface{}) {
-	logger.Sugar().Named(name).Infof(template, args...)
+func InfofCtx(c *gin.Context, template string, args ...interface{}) {
+	logger.Sugar().With("X-Request-Id", requestid.Get(c)).Infof(template, args...)
 }
 
-func ErrorfName(name, template string, args ...interface{}) {
-	logger.Sugar().Named(name).Errorf(template, args...)
+func ErrorfCtx(c *gin.Context, template string, args ...interface{}) {
+	logger.Sugar().With("X-Request-Id", requestid.Get(c)).Errorf(template, args...)
 }
 
-func WarnfName(name, template string, args ...interface{}) {
-	logger.Sugar().Named(name).Warnf(template, args...)
+func WarnfCtx(c *gin.Context, template string, args ...interface{}) {
+	logger.Sugar().With("X-Request-Id", requestid.Get(c)).Warnf(template, args...)
 }
 
-func DebugfName(name, template string, args ...interface{}) {
-	logger.Sugar().Named(name).Debugf(template, args...)
+func DebugfCtx(c *gin.Context, template string, args ...interface{}) {
+	logger.Sugar().With("X-Request-Id", requestid.Get(c)).Debugf(template, args...)
 }
+
+// func InfofName(name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Infof(template, args...)
+// }
+
+// func ErrorfName(name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Errorf(template, args...)
+// }
+
+// func WarnfName(name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Warnf(template, args...)
+// }
+
+// func DebugfName(name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).Debugf(template, args...)
+// }
+
+// func InfofNameCtx(c *gin.Context, name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Infof(template, args...)
+// }
+
+// func ErrorfNameCtx(c *gin.Context, name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Errorf(template, args...)
+// }
+
+// func WarnfNameCtx(c *gin.Context, name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Warnf(template, args...)
+// }
+
+// func DebugfNameCtx(c *gin.Context, name, template string, args ...interface{}) {
+// 	logger.Sugar().Named(name).With("X-Request-Id", requestid.Get(c)).Debugf(template, args...)
+// }
