@@ -2,6 +2,7 @@ logger:
   MaxSize:    1,    # 单一档案最大几M
   MaxBackups: 10,   # 最多保留几份
   MaxAge:     7,    # 最多保留几天
+  Compress:   True, # 压缩成gz
 redis:
   user : root
   password : password
