@@ -114,7 +114,6 @@ func initForAccess() {
 		),
 	)
 	loggerForAccess = zap.New(coreForAccess)
-
 }
 
 func Close() {
