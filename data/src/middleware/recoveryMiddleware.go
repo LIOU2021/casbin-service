@@ -9,7 +9,7 @@ import (
 
 func RecoveryMiddleware() gin.HandlerFunc {
 	return gin.CustomRecovery(func(c *gin.Context, err interface{}) {
-		logger.ErrorName("panic", err)
+		logger.ErrorfCtx(c, "panic | err: %v", err)
 		c.AbortWithStatus(http.StatusInternalServerError)
 	})
 }
