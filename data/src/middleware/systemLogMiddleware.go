@@ -4,6 +4,7 @@ import (
 	"casbin-service/logger"
 	"time"
 
+	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,7 +15,7 @@ func SystemLogFormatMiddleware(c *gin.Context) {
 
 	d := time.Since(start)
 
-	logger.GetAccessLogger().Sugar().Infof("%s - [%s] \"%s %s %s\" %d %d %s \"%s\"",
+	logger.GetAccessLogger().Sugar().Infof("%s - [%s] \"%s %s %s\" %d %d %s %s \"%s\"",
 		c.ClientIP(),
 		time.Now().Format(time.RFC3339Nano),
 		c.Request.Method,
@@ -23,6 +24,7 @@ func SystemLogFormatMiddleware(c *gin.Context) {
 		c.Writer.Status(),
 		c.Request.ContentLength,
 		d.String(),
+		requestid.Get(c),
 		c.Request.UserAgent(),
 	)
 }
