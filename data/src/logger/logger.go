@@ -113,7 +113,8 @@ func initForAccess() {
 			zapcore.InfoLevel,
 		),
 	)
-	loggerForAccess = zap.New(coreForAccess, zap.AddCaller())
+	loggerForAccess = zap.New(coreForAccess)
+
 }
 
 func Close() {
