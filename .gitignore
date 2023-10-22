@@ -8,3 +8,5 @@ casbin-service
 main
 main.exe
 config.yml
+*.log
+*.gz
