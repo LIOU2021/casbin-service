@@ -9,7 +9,7 @@
 # 1. 處理docker-compose env
 cp .env.example .env
 
-# 2. 
+# 2. 處理 golang server config
 cp data/src/config.yml.example data/src/config.yml
 
 # 3. 起docker-compose容器
