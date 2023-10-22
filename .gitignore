@@ -7,4 +7,4 @@ casbin-service.exe
 casbin-service
 main
 main.exe
-conf.yml
+config.yml
