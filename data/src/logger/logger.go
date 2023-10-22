@@ -2,6 +2,7 @@ package logger
 
 import (
 	"os"
+	"sync"
 
 	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,7 @@ import (
 
 var logger *zap.Logger
 var loggerForAccess *zap.Logger
+var loggerInitOnce sync.Once
 
 //	func MyCaller(caller zapcore.EntryCaller, enc zapcore.PrimitiveArrayEncoder) {
 //		enc.AppendString(filepath.Base(caller.FullPath()))
@@ -22,8 +24,10 @@ func GetAccessLogger() *zap.Logger {
 }
 
 func Init() {
-	initBase()
-	initForAccess()
+	loggerInitOnce.Do(func() {
+		initBase()
+		initForAccess()
+	})
 }
 
 func initBase() {
