@@ -1,6 +1,7 @@
 package main
 
 import (
+	"casbin-service/config"
 	"casbin-service/logger"
 	"casbin-service/router"
 	"context"
@@ -20,7 +21,7 @@ func main() {
 	}()
 
 	r := router.Init()
-
+	config.Init()
 	p := ":8080"
 	srv := &http.Server{
 		Addr:    p,

@@ -46,7 +46,7 @@ func Init() {
 			logger.Errorf("config init read file fail | err: %v", err)
 			os.Exit(1)
 		}
-
+		Config = &ConfigYml{}
 		err = yaml.Unmarshal(data, Config)
 		if err != nil {
 			logger.Errorf("config init unmarshal fail | err: %v", err)
