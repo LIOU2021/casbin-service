@@ -1,9 +1,7 @@
 # casbin service
 
 ## todo
-1. golang load conf.yml
-2. config.yml 寫在`data\src`，dockerfile要copy這個檔案到第二個stage。复制example变成config.yml
-3. 将logger配置读取config.yml
+
 ## start
 ```
 # 1. 處理docker-compose env
