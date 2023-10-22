@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"casbin-service/config"
 	"os"
 	"sync"
 
@@ -33,10 +34,10 @@ func Init() {
 func initBase() {
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   "../log/server/server.log",
-		MaxSize:    1,    // 单一档案最大几M
-		MaxBackups: 10,   // 最多保留几份
-		MaxAge:     7,    // 最多保留几天
-		Compress:   true, // 压缩成gz
+		MaxSize:    config.Config.Logger.MaxSize,    // 单一档案最大几M
+		MaxBackups: config.Config.Logger.MaxBackups, // 最多保留几份
+		MaxAge:     config.Config.Logger.MaxAge,     // 最多保留几天
+		Compress:   config.Config.Logger.Compress,   // 压缩成gz
 	}
 
 	writeSyncer := zapcore.AddSync(lumberJackLogger)
@@ -85,10 +86,10 @@ func initBase() {
 func initForAccess() {
 	lumberJackLoggerForAccess := &lumberjack.Logger{
 		Filename:   "../log/api/access.log",
-		MaxSize:    1,    // 单一档案最大几M
-		MaxBackups: 10,   // 最多保留几份
-		MaxAge:     7,    // 最多保留几天
-		Compress:   true, // 压缩成gz
+		MaxSize:    config.Config.Logger.MaxSize,    // 单一档案最大几M
+		MaxBackups: config.Config.Logger.MaxBackups, // 最多保留几份
+		MaxAge:     config.Config.Logger.MaxAge,     // 最多保留几天
+		Compress:   config.Config.Logger.Compress,   // 压缩成gz
 	}
 	writeSyncerForAccess := zapcore.AddSync(lumberJackLoggerForAccess)
 	encodeConfigForAccess := zapcore.EncoderConfig{

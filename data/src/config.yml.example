@@ -1,3 +1,5 @@
+server:
+  port: 8080
 logger:
   maxSize:    1    # 单一档案最大几M
   maxBackups: 10   # 最多保留几份

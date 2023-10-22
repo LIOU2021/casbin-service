@@ -5,6 +5,7 @@ import (
 	"casbin-service/logger"
 	"casbin-service/router"
 	"context"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -13,16 +14,17 @@ import (
 )
 
 func init() {
+	config.Init()
 	logger.Init()
 }
+
 func main() {
 	defer func() {
 		logger.Close()
 	}()
 
 	r := router.Init()
-	config.Init()
-	p := ":8080"
+	p := fmt.Sprintf(":%s", config.Config.Server.Port)
 	srv := &http.Server{
 		Addr:    p,
 		Handler: r,

@@ -1,7 +1,9 @@
 package config
 
 import (
-	"casbin-service/logger"
+	"casbin-service/helper"
+	"errors"
+	"log"
 	"os"
 	"sync"
 
@@ -9,9 +11,14 @@ import (
 )
 
 type ConfigYml struct {
+	Server ServerYml `yaml:"server"`
 	Logger LoggerYml `yaml:"logger"`
 	Redis  RedisYml  `yaml:"redis"`
 	Mysql  MysqlYml  `yaml:"mysql"`
+}
+
+type ServerYml struct {
+	Port string `yaml:"port"`
 }
 
 type LoggerYml struct {
@@ -41,16 +48,48 @@ var ConfigOnce sync.Once
 
 func Init() {
 	ConfigOnce.Do(func() {
-		data, err := os.ReadFile("../config.yml")
+		data, err := os.ReadFile("./config.yml")
 		if err != nil {
-			logger.Errorf("config init read file fail | err: %v", err)
-			os.Exit(1)
+			log.Fatalf("config init read file fail | err: %v\n", err)
 		}
 		Config = &ConfigYml{}
 		err = yaml.Unmarshal(data, Config)
 		if err != nil {
-			logger.Errorf("config init unmarshal fail | err: %v", err)
-			os.Exit(1)
+			log.Fatalf("config init unmarshal fail | err: %v\n", err)
+		}
+
+		if err := Check(); err != nil {
+			log.Fatalf("config init check fail | err: %v\n", err)
 		}
 	})
+}
+
+// 檢查logger配置是否能正常讀取
+func Check() (err error) {
+	if helper.IsEmpty(Config.Server.Port) {
+		return errors.New("Config.Server.Port was empty")
+	}
+
+	if helper.IsEmpty(Config.Logger.MaxSize) {
+		return errors.New("Config.Logger.MaxSize was empty")
+	}
+
+	if helper.IsEmpty(Config.Logger.MaxBackups) {
+		return errors.New("Config.Logger.MaxBackups was empty")
+	}
+
+	if helper.IsEmpty(Config.Logger.MaxAge) {
+		return errors.New("Config.Logger.MaxAge was empty")
+	}
+
+	out, err := yaml.Marshal(Config)
+	if err != nil {
+		return
+	}
+
+	if helper.IsEmpty(string(out)) {
+		return errors.New("config.yaml marshal was empty")
+	}
+
+	return
 }
