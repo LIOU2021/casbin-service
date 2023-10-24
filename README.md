@@ -1,7 +1,7 @@
 # casbin service
 > RBAC model
 ## todo
-- 删除某p或g的资料，参考casbin_rule
+
 
 ## start
 ```
