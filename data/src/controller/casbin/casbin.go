@@ -12,7 +12,7 @@ import (
 
 // 创建政策
 func InsertPolicy(c *gin.Context) {
-	req := &model.Casbin{}
+	req := &model.CasbinAddPolicy{}
 	err := c.ShouldBindJSON(req)
 	if err != nil {
 		logger.ErrorfCtx(c, "InsertPolicy request unmarshal fail | err= %v", err)
@@ -39,12 +39,37 @@ func InsertPolicy(c *gin.Context) {
 
 // 创建角色
 func InsertRole(c *gin.Context) {
-	core.Enforcer.AddGroupingPolicy()
-	c.String(200, "hi insert Role")
+	req := &model.CasbinAddRole{}
+	err := c.ShouldBindJSON(req)
+	if err != nil {
+		logger.ErrorfCtx(c, "InsertRole request unmarshal fail | err= %v", err)
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	ok, err := core.Enforcer.AddGroupingPolicy(req.Rsub, req.Psub)
+	if err != nil {
+		logger.ErrorfCtx(c, "InsertRole AddGroupingPolicy error | err= %v", err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	if !ok {
+		b, _ := json.Marshal(req)
+		logger.ErrorfCtx(c, "InsertRole AddGroupingPolicy fail | req= %s", string(b))
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.String(200, "SUCCESS")
 }
 
 func GetPolicy(c *gin.Context) {
 	c.JSON(200, core.Enforcer.GetPolicy())
+}
+
+func GetRole(c *gin.Context) {
+	c.JSON(200, core.Enforcer.GetGroupingPolicy())
 }
 
 func GetModel(c *gin.Context) {

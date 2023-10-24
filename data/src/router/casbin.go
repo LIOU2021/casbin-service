@@ -6,6 +6,7 @@ func casbinApi() {
 	group := engine.Group("/casbin")
 
 	group.POST("/role", casbin.InsertRole)
+	group.GET("/role", casbin.GetRole)
 
 	group.POST("/policy", casbin.InsertPolicy)
 	group.GET("/policy", casbin.GetPolicy)
