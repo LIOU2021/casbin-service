@@ -25,3 +25,4 @@ make up
 - [casbin online editor](https://casbin.org/editor/)
 - [Use your own storage adapter](https://casbin.org/docs/adapters/#use-your-own-storage-adapter)
 - [Database Storage Format](https://casbin.org/docs/policy-storage/#database-storage-format)
+- [RBAC API](https://casbin.org/docs/rbac-api/)
