@@ -64,6 +64,36 @@ func InsertRole(c *gin.Context) {
 	c.String(200, "SUCCESS")
 }
 
+// 验证政策
+func Enforce(c *gin.Context) {
+	req := &model.CasbinEnforce{}
+	err := c.ShouldBindJSON(req)
+	if err != nil {
+		logger.ErrorfCtx(c, "enforce request unmarshal fail | err= %v", err)
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	ok, err := core.Enforcer.Enforce(req.Sub, req.Obj, req.Act)
+
+	defer func() {
+		logger.InfofCtx(c, "enforce access | ok= %t | sub: %s, obj: %s, act: %s", ok, req.Sub, req.Obj, req.Act)
+	}()
+
+	if err != nil {
+		logger.ErrorfCtx(c, "enforce error | sub: %s, obj: %s, act: %s | err= %v", ok, req.Sub, req.Obj, req.Act, err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	if !ok {
+		c.String(http.StatusForbidden, "FORBIDDEN")
+		return
+	}
+
+	c.String(200, "SUCCESS")
+}
+
 func GetPolicy(c *gin.Context) {
 	c.JSON(200, core.Enforcer.GetPolicy())
 }

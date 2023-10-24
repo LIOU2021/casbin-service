@@ -12,4 +12,6 @@ func casbinApi() {
 	group.GET("/policy", casbin.GetPolicy)
 
 	group.GET("/model", casbin.GetModel)
+
+	group.POST("/enforce", casbin.Enforce)
 }
