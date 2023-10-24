@@ -149,7 +149,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"r_sub\": \"lala2\",\n    \"p_sub\": \"develop2\"\n}",
+					"raw": "{\n    \"r_sub\": \"lala3\",\n    \"p_sub\": \"develop2\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -181,7 +181,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"sub\": \"lala2\",\n    \"obj\": \"data3\",\n    \"act\": \"read\"\n}",
+					"raw": "{\n    \"sub\": \"lala2\",\n    \"obj\": \"data3\",\n    \"act\": \"write\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -257,6 +257,103 @@
 					"path": [
 						"casbin",
 						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "casbin/role",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sub\":\"develop\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/casbin/role",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"casbin",
+						"role"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "casbin/role/user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"r_sub\":\"lala\",\r\n    \"p_sub\":\"develop\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/casbin/role/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"casbin",
+						"role",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "casbin/user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user\":\"lala2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8080/casbin/user",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8080",
+					"path": [
+						"casbin",
+						"user"
 					]
 				}
 			},
