@@ -16,7 +16,7 @@ FROM gcr.io/distroless/base-debian11 AS build-release-stage
 
 WORKDIR /app/src
 
-COPY --from=build-stage /casbin-service /app/src/config.yml /app/src/
+COPY --from=build-stage /casbin-service /app/src/config.yml /app/src/model.conf /app/src/
 
 EXPOSE 8080
 

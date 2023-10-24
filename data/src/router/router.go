@@ -21,5 +21,6 @@ func Init() (r *gin.Engine) {
 	)
 
 	systemApi()
+	casbinApi()
 	return engine
 }

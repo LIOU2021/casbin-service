@@ -2,6 +2,7 @@ package main
 
 import (
 	"casbin-service/config"
+	"casbin-service/core"
 	"casbin-service/logger"
 	"casbin-service/router"
 	"context"
@@ -16,6 +17,7 @@ import (
 func init() {
 	config.Init()
 	logger.Init()
+	core.CasbinInit()
 }
 
 func main() {
