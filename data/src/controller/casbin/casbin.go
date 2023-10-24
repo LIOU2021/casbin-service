@@ -105,3 +105,30 @@ func GetRole(c *gin.Context) {
 func GetModel(c *gin.Context) {
 	c.String(200, core.Enforcer.GetModel().ToText())
 }
+
+func GetInfo(c *gin.Context) {
+	c.JSON(200, gin.H{
+		"all_roles":   core.Enforcer.GetAllRoles(),
+		"all_actions": core.Enforcer.GetAllActions(),
+		"all_objects": core.Enforcer.GetAllObjects(),
+	})
+}
+
+func GetRoleForUser(c *gin.Context) {
+	req := &model.CasbinFindRoleForUser{}
+	err := c.ShouldBindJSON(req)
+	if err != nil {
+		logger.ErrorfCtx(c, "GetRoleForUser request unmarshal fail | err= %v", err)
+		c.AbortWithStatus(http.StatusBadRequest)
+		return
+	}
+
+	list, err := core.Enforcer.GetRolesForUser(req.User)
+	if err != nil {
+		logger.ErrorfCtx(c, "GetRoleForUser GetRolesForUser fail | err= %v", err)
+		c.AbortWithStatus(http.StatusInternalServerError)
+		return
+	}
+
+	c.JSON(200, list)
+}

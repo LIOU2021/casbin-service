@@ -16,3 +16,7 @@ type CasbinEnforce struct {
 	Obj string `json:"obj" form:"obj" binding:"required"`
 	Act string `json:"act" form:"act" binding:"required"`
 }
+
+type CasbinFindRoleForUser struct {
+	User string `json:"user" form:"user" binding:"required"` // 就是sub
+}
